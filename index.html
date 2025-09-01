@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Благотворительный фонд — Садака и Закят</title>
+  <meta name="description" content="Помогаем нуждающимся ради довольства Аллаха: закят, садака, фитр. Полная прозрачность и удобные пожертвования." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#0f7b3d; /* основной зелёный */
+      --green-600:#0d6d36;
+      --green-700:#0b5f2f;
+      --gold:#c8a043;  /* акцент */
+      --bg:#0b1b14;    /* тёмный изумрудный фон */
+      --card: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.1);
+      --text:#f7f8f8;
+      --muted:#bfd8cc;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--text); background:var(--bg);
+      line-height:1.6; 
+      /* геометрический узор на фоне */
+      background-image: radial-gradient( rgba(255,255,255,.06) 1px, transparent 1px),
+                        radial-gradient( rgba(255,255,255,.04) 1px, transparent 1px),
+                        linear-gradient( to bottom right, rgba(12,70,45,.35), rgba(7,26,20,.6));
+      background-size: 24px 24px, 48px 48px, cover;
+      background-position: 0 0, 12px 12px, center;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1200px, 92vw); margin:0 auto}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:calc(var(--radius) + 4px); font-weight:600; border:1px solid rgba(255,255,255,.2); background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06)); backdrop-filter: blur(8px); box-shadow: var(--shadow);}
+    .btn--primary{background: linear-gradient(180deg, #1a9a52, #0f7b3d); border:1px solid rgba(255,255,255,.25)}
+    .btn--gold{background: linear-gradient(180deg, #e9c46a, #c8a043); color:#1a1a1a}
+    .btn--ghost{background:transparent; border:1px solid rgba(255,255,255,.15)}
+    nav{position:sticky; top:0; z-index:50; backdrop-filter: blur(12px); background:rgba(7,26,20,.55); border-bottom:1px solid rgba(255,255,255,.08)}
+    nav .bar{display:flex; align-items:center; justify-content:space-between; padding: .8rem 0}
+    .logo{display:flex; align-items:center; gap:.75rem; font-weight:700}
+    .logo i{width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background: radial-gradient(circle at 30% 30%, #1fb574, #0f7b3d); box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+    .nav-links{display:flex; gap:1.2rem; align-items:center}
+    .nav-links a{opacity:.9}
+
+    /* HERO */
+    .hero{position:relative; overflow:hidden}
+    .hero .wrap{display:grid; grid-template-columns: 1.2fr .8fr; gap:2rem; padding:clamp(1rem, 2vw, 2rem) 0 2.2rem; align-items:center}
+    .tag{display:inline-block; padding:.25rem .6rem; border-radius:999px; background:rgba(200,160,67,.15); color:#f3e4b1; border:1px solid rgba(200,160,67,.35); font-size:.9rem}
+    h1{font-size: clamp(2rem, 4vw, 3rem); line-height:1.15; margin:.6rem 0 1rem; letter-spacing:.3px}
+    .lead{color:var(--muted); font-size:1.05rem; margin:0 0 1.6rem}
+    .stats{display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; margin-top:1.6rem}
+    .stat{padding:1rem; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius)}
+    .stat b{display:block; font-size:1.6rem}
+    .glass-card{background:var(--glass); border:1px solid rgba(255,255,255,.14); border-radius:var(--radius); padding:1.2rem; box-shadow:var(--shadow)}
+
+    /* Donation card */
+    .donation-card{display:flex; flex-direction:column; gap:1rem}
+    .tabs{display:flex; gap:.5rem; flex-wrap:wrap}
+    .tab{padding:.6rem .8rem; border-radius:999px; border:1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); cursor:pointer}
+    .tab[aria-selected="true"]{background:linear-gradient(180deg, #e9c46a, #c8a043); color:#1a1a1a; border-color:transparent}
+    .amounts{display:grid; grid-template-columns: repeat(4, 1fr); gap:.5rem}
+    .chip{padding:.7rem; text-align:center; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); cursor:pointer}
+    .chip[aria-pressed="true"]{outline:2px solid var(--gold); background:rgba(200,160,67,.12)}
+    .field{display:flex; gap:.5rem; align-items:center}
+    .field input[type="number"], .field input[type="text"]{flex:1; padding:.8rem; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); color:var(--text)}
+    .pay-opts{display:flex; gap:.6rem; flex-wrap:wrap}
+    .pay-opts .chip{display:flex; align-items:center; gap:.5rem; padding:.6rem .8rem}
+    .muted{color:var(--muted); font-size:.95rem}
+
+    /* Sections */
+    section{padding:3.2rem 0}
+    h2{font-size: clamp(1.6rem, 3vw, 2.2rem); margin:0 0 1rem}
+    .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem}
+    .grid-2{display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem}
+
+    .metric{padding:1.1rem; border-radius:var(--radius); border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05)}
+    .metric b{font-size:1.4rem}
+
+    .quote{position:relative; padding:1.2rem 1.2rem 1.2rem 1.4rem; border-left:4px solid var(--gold); background:rgba(255,255,255,.04); border-radius:12px}
+    .quote small{display:block; color:var(--muted)}
+
+    .stories .story{display:grid; grid-template-columns: 160px 1fr; gap:1rem; align-items:center; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:var(--radius); padding:1rem}
+    .story img{width:100%; height:120px; object-fit:cover; border-radius:12px}
+
+    .faq details{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:1rem}
+    .faq details+details{margin-top:.6rem}
+    .faq summary{cursor:pointer; font-weight:600}
+
+    footer{border-top:1px solid rgba(255,255,255,.1); background:rgba(0,0,0,.25); padding:2rem 0}
+    .footgrid{display:grid; grid-template-columns: 1.5fr 1fr 1fr; gap:1.2rem}
+
+    /* Responsive */
+    @media (max-width: 940px){
+      .hero .wrap{grid-template-columns: 1fr; padding-top: .6rem}
+      .grid-3{grid-template-columns: 1fr}
+      .grid-2{grid-template-columns: 1fr}
+      .stories .story{grid-template-columns: 1fr}
+      .stats{grid-template-columns: repeat(3, minmax(0, 1fr))}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container bar">
+      <a class="logo" href="#">
+        <i aria-hidden="true">🕋</i>
+        <span>Фонд Милосердия</span>
+      </a>
+      <div class="nav-links" role="navigation" aria-label="Основная навигация">
+        <a href="#mission">Миссия</a>
+        <a href="#projects">Проекты</a>
+        <a href="#reports">Отчёты</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contacts">Контакты</a>
+        <a class="btn btn--gold" href="#donate">Пожертвовать</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container wrap">
+      <div>
+        <span class="tag">Закят • Садака • Фитр</span>
+        <h1>Помощь нуждающимся ради довольства Аллаха</h1>
+        <p class="lead">Ваше пожертвование превращается в еду, лекарства, тепло и образование. Мы действуем прозрачно: каждый рубль виден в отчётах.</p>
+        <div class="actions">
+          <a class="btn btn--gold" href="#donate">Сделать пожертвование</a>
+          <a class="btn btn--ghost" href="#reports">Смотреть отчёты</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="statRaised">₽ 12 580 430</b><span class="muted">собрано за год</span></div>
+          <div class="stat"><b id="statPeople">3 214</b><span class="muted">получили помощь</span></div>
+          <div class="stat"><b id="statProjects">27</b><span class="muted">активных проектов</span></div>
+        </div>
+      </div>
+      <div class="glass-card donation-card" id="donate">
+        <div>
+          <h3 style="margin:0 0 .4rem">Пожертвование</h3>
+          <p class="muted" style="margin:.2rem 0 0">Выберите тип пожертвования</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Тип пожертвования">
+          <button class="tab" role="tab" aria-selected="true" data-type="sadaqa">Садака</button>
+          <button class="tab" role="tab" aria-selected="false" data-type="zakat">Закят</button>
+          <button class="tab" role="tab" aria-selected="false" data-type="fitr">Фитр</button>
+        </div>
+        <div>
+          <p class="muted" style="margin:.2rem 0 .4rem">Сумма</p>
+          <div class="amounts">
+            <button class="chip" aria-pressed="false" data-amount="500">₽ 500</button>
+            <button class="chip" aria-pressed="false" data-amount="1000">₽ 1 000</button>
+            <button class="chip" aria-pressed="false" data-amount="3000">₽ 3 000</button>
+            <button class="chip" aria-pressed="false" data-amount="10000">₽ 10 000</button>
+          </div>
+        </div>
+        <div class="field">
+          <input id="customAmount" type="number" min="50" step="50" placeholder="Другая сумма (₽)" aria-label="Другая сумма">
+          <label style="display:flex; align-items:center; gap:.45rem; white-space:nowrap">
+            <input id="recurring" type="checkbox"> Ежемесячно
+          </label>
+        </div>
+        <div>
+          <p class="muted" style="margin:.2rem 0 .4rem">Способ оплаты</p>
+          <div class="pay-opts">
+            <button class="chip" aria-pressed="false" data-pay="card">💳 Карта</button>
+            <button class="chip" aria-pressed="false" data-pay="sbp">🏦 СБП</button>
+            <button class="chip" aria-pressed="false" data-pay="apple"> Pay</button>
+            <button class="chip" aria-pressed="false" data-pay="google">G Pay</button>
+          </div>
+        </div>
+        <button class="btn btn--primary" id="donateBtn">Пожертвовать сейчас</button>
+        <p class="muted" style="margin:0">Нажимая кнопку, вы соглашаетесь с <a href="#policy">политикой обработки данных</a>.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="mission">
+      <div class="container grid-2">
+        <div>
+          <h2>Наша миссия</h2>
+          <p>Оказывать адресную помощь семьям, детям-сиротам, пожилым и людям в сложной ситуации, следуя принципам исламской благотворительности: искренность намерения (нийя), справедливость и прозрачность.</p>
+          <div class="grid-3" style="margin-top:1rem">
+            <div class="metric"><b>Еда и лекарства</b><br><span class="muted">Продуктовые наборы, лечение и реабилитация</span></div>
+            <div class="metric"><b>Образование</b><br><span class="muted">Стипендии, учебники, кружки</span></div>
+            <div class="metric"><b>Дом и тепло</b><br><span class="muted">Оплата аренды, коммунальных услуг, ремонт</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="quote">
+            «Аллах любит тех, кто творит добро»
+            <small class="muted">— напоминание о ценности милосердия</small>
+          </div>
+          <p class="muted" style="margin-top:.8rem">Вы можете направить закят на конкретные категории получателей — мы соблюдаем условия распределения и предоставляем подтверждающие отчёты.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <h2>Текущие проекты</h2>
+        <div class="grid-3">
+          <div class="glass-card">
+            <h3 style="margin:.2rem 0">Тёплый дом</h3>
+            <p class="muted">Помощь с оплатой коммунальных услуг и ремонтом для малоимущих семей.</p>
+            <div class="metric" style="margin-top:.6rem"><b>₽ 820 000</b><br><span class="muted">из ₽ 1 200 000</span></div>
+            <a class="btn btn--ghost" href="#donate">Поддержать</a>
+          </div>
+          <div class="glass-card">
+            <h3 style="margin:.2rem 0">Здоровье детям</h3>
+            <p class="muted">Оплата анализа, лекарств и реабилитации для детей.</p>
+            <div class="metric" style="margin-top:.6rem"><b>₽ 1 540 000</b><br><span class="muted">из ₽ 2 000 000</span></div>
+            <a class="btn btn--ghost" href="#donate">Поддержать</a>
+          </div>
+          <div class="glass-card">
+            <h3 style="margin:.2rem 0">Шанс на знание</h3>
+            <p class="muted">Стипендии и учебные материалы для студентов.</p>
+            <div class="metric" style="margin-top:.6rem"><b>₽ 460 000</b><br><span class="muted">из ₽ 900 000</span></div>
+            <a class="btn btn--ghost" href="#donate">Поддержать</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reports">
+      <div class="container grid-2">
+        <div>
+          <h2>Прозрачность и отчёты</h2>
+          <p>Каждое пожертвование фиксируется. В личном кабинете вы видите сумму, направление и эффект от помощи. Мы публикуем ежемесячные отчёты, подтверждения переводов и фотоотчёты.</p>
+          <ul>
+            <li>Ежемесячные PDF-отчёты</li>
+            <li>Сводный дашборд поступлений и расходов</li>
+            <li>Проверка шариатского соответствия распределения закята</li>
+          </ul>
+          <a class="btn btn--gold" href="#">Смотреть отчёты</a>
+        </div>
+        <div class="glass-card stories">
+          <h3 style="margin:.2rem 0 1rem">Истории людей</h3>
+          <div class="story">
+            <img src="https://images.unsplash.com/photo-1508186225823-0963cf9ab0de?q=80&w=800&auto=format&fit=crop" alt="Семья, получившая помощь"/>
+            <div>
+              <b>Семья Ахмеда</b>
+              <p class="muted">Оплатили лечение сына и продукты на три месяца. Семья вернулась к стабильной жизни.</p>
+            </div>
+          </div>
+          <div class="story" style="margin-top:.6rem">
+            <img src="https://images.unsplash.com/photo-1504598318550-17eba1008a68?q=80&w=800&auto=format&fit=crop" alt="Пожилой человек получает продукты"/>
+            <div>
+              <b>Устаз Мухаммад</b>
+              <p class="muted">Организовали регулярную продуктовую поддержку и оплатили лекарства на полгода.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="endorse">
+      <div class="container grid-2">
+        <div>
+          <h2>Рекомендации и попечители</h2>
+          <p class="muted">Фонд поддерживают имамы и общественные деятели. Попечительский совет контролирует целевое использование средств.</p>
+          <div class="grid-3" style="margin-top:.6rem">
+            <div class="glass-card"><b>Имам мечети «Нур»</b><br><span class="muted">Рекомендательное письмо</span></div>
+            <div class="glass-card"><b>Ассоциация общин</b><br><span class="muted">Сертификат партнёра</span></div>
+            <div class="glass-card"><b>Аудитор</b><br><span class="muted">Заключение проверки</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="quote">
+            «Лучшие из вас — те, кто помогает другим». 
+            <small class="muted">— наставление о милосердии и поддержке</small>
+          </div>
+          <p class="muted" style="margin-top:.8rem">Письма и сертификаты доступны в разделе «Отчёты».</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="container">
+        <h2>Частые вопросы</h2>
+        <details>
+          <summary>Чем отличаются закят и садака?</summary>
+          <p class="muted">Закят — обязательная милостыня при выполнении условий; садака — добровольная помощь. Мы отдельно учитываем и распределяем эти средства.</p>
+        </details>
+        <details>
+          <summary>Могу ли я указать цель пожертвования?</summary>
+          <p class="muted">Да, вы можете выбрать проект или категорию получателей. В отчёте будет отмечено направление.</p>
+        </details>
+        <details>
+          <summary>Как проверить расходование средств?</summary>
+          <p class="muted">Доступны ежемесячные отчёты, фото/видео подтверждения и аудиторские заключения.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts">
+    <div class="container footgrid">
+      <div>
+        <b style="font-size:1.1rem">Контакты</b>
+        <p class="muted">г. Казань, ул. Светлая, 10<br>Тел.: +7 (900) 123‑45‑67<br>E‑mail: info@fond.example</p>
+        <p class="muted">Реквизиты: ИНН 0000000000 • ОГРН 0000000000000</p>
+      </div>
+      <div>
+        <b style="font-size:1.1rem">Соцсети</b>
+        <p class="muted"><a href="#">VK</a> • <a href="#">Telegram</a> • <a href="#">YouTube</a></p>
+      </div>
+      <div>
+        <b style="font-size:1.1rem">Юридическая информация</b>
+        <p class="muted"><a href="#policy">Политика обработки персональных данных</a><br><a href="#offer">Публичная оферта</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Небольшая интерактивность формы пожертвования
+    const typeTabs = document.querySelectorAll('.tab');
+    const amountChips = document.querySelectorAll('.amounts .chip');
+    const payChips = document.querySelectorAll('.pay-opts .chip');
+    const customAmount = document.getElementById('customAmount');
+    const donateBtn = document.getElementById('donateBtn');
+
+    let donation = { type: 'sadaqa', amount: 0, pay:'card', recurring:false };
+
+    typeTabs.forEach(t=>{
+      t.addEventListener('click', ()=>{
+        typeTabs.forEach(x=>x.setAttribute('aria-selected','false'));
+        t.setAttribute('aria-selected','true');
+        donation.type = t.dataset.type;
+      })
+    })
+
+    amountChips.forEach(c=>{
+      c.addEventListener('click', ()=>{
+        amountChips.forEach(x=>x.setAttribute('aria-pressed','false'));
+        c.setAttribute('aria-pressed','true');
+        customAmount.value = c.dataset.amount;
+        donation.amount = Number(c.dataset.amount);
+      })
+    })
+
+    payChips.forEach(c=>{
+      c.addEventListener('click', ()=>{
+        payChips.forEach(x=>x.setAttribute('aria-pressed','false'));
+        c.setAttribute('aria-pressed','true');
+        donation.pay = c.dataset.pay;
+      })
+    })
+
+    document.getElementById('recurring').addEventListener('change', (e)=>{
+      donation.recurring = e.target.checked;
+    })
+
+    customAmount.addEventListener('input', ()=>{
+      donation.amount = Number(customAmount.value || 0);
+      amountChips.forEach(x=>x.setAttribute('aria-pressed','false'));
+    })
+
+    donateBtn.addEventListener('click', ()=>{
+      if(!donation.amount || donation.amount < 50){
+        alert('Пожалуйста, введите сумму не менее 50 ₽');
+        return;
+      }
+      // Здесь интеграция с платёжным шлюзом/CRM
+      alert(`Спасибо за поддержку!\nТип: ${donation.type}\nСумма: ${donation.amount.toLocaleString('ru-RU')} ₽\nОплата: ${donation.pay}\nПовторять: ${donation.recurring ? 'да' : 'нет'}`);
+    })
+  </script>
+</body>
+</html>
